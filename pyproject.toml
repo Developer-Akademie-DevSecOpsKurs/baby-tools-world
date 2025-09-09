@@ -18,7 +18,5 @@ exclude = [
     ".venv",
     "env",
     ".env",
-    "build",
-    "dist",
     "migrations",
 ]
