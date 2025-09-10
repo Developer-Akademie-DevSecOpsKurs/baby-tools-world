@@ -1,8 +1,8 @@
 import time
-from functools import wraps
-from datetime import datetime
 import traceback
-import os
+from datetime import datetime
+from functools import wraps
+
 
 def log_execution(func):
     @wraps(func)
@@ -16,14 +16,15 @@ def log_execution(func):
         GREEN = "\033[92m"
         RED = "\033[91m"
         YELLOW = "\033[93m"
-        
+
         start_time = time.time()
         timestamp_start = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-        print(f"{YELLOW}[{timestamp_start}]{RESET}"
-            +f" {BLUE}Commencing Test ({func.__module__})\n"
-            +f"Running test function{RESET}"
-            +f" {func.__name__}")
-
+        print(
+            f"{YELLOW}[{timestamp_start}]{RESET}"
+            + f" {BLUE}Commencing Test ({func.__module__})\n"
+            + f"Running test function{RESET}"
+            + f" {func.__name__}"
+        )
 
         try:
             result = func(*args, **kwargs)
@@ -45,11 +46,15 @@ def log_execution(func):
         else:
             status = f"{RED}{CROSS_MARK} Failure: {error}{RESET}"
 
-        print(f"{YELLOW}[{timestamp_end}]{RESET}"
-              + f"{BLUE} Ran function in {duration:.4f} seconds{RESET} - "
-              + f"{status}\n"
-              + f"Stack trace info:\n{tb}\n" if tb else ""
-              + "--------------------------------------------------------------------\n")
+        print(
+            f"{YELLOW}[{timestamp_end}]{RESET}"
+            + f"{BLUE} Ran function in {duration:.4f} seconds{RESET} - "
+            + f"{status}\n"
+            + f"Stack trace info:\n{tb}\n"
+            if tb
+            else "" + "--------------------------------------------------------------------\n"
+        )
 
         return result
+
     return wrapper

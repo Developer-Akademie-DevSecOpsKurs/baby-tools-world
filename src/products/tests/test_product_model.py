@@ -1,18 +1,16 @@
 from decimal import Decimal
+
 from django.test import TestCase
 
 from btw_app.utils import log_execution
-from products.models import Product, Category
+from products.models import Category, Product
 
 
 class ProductTestCase(TestCase):
 
     @classmethod
     def setUpTestData(self):
-        self.test_category = Category.objects.create(
-            name="Test Category",
-            slug="test-category"
-        )
+        self.test_category = Category.objects.create(name="Test Category", slug="test-category")
         self.test_product_name = "Test Product"
         self.test_product_description = "This is a test product description."
         self.test_product_price = Decimal("19.99")
@@ -28,19 +26,15 @@ class ProductTestCase(TestCase):
             name=self.test_product_name,
             description=self.test_product_description,
             price=self.test_product_price,
-            category=self.test_category
+            category=self.test_category,
         )
         product.full_clean()
         self.assertEqual(Product.objects.count(), 1)
         # check if product attributes are set correctly
-        self.assertEqual(
-            Product.objects.first().name, self.test_product_name)
-        self.assertEqual(
-            Product.objects.first().description, self.test_product_description)
-        self.assertEqual(
-            Product.objects.first().price, self.test_product_price)
-        self.assertEqual(
-            Product.objects.first().category, self.test_category)
+        self.assertEqual(Product.objects.first().name, self.test_product_name)
+        self.assertEqual(Product.objects.first().description, self.test_product_description)
+        self.assertEqual(Product.objects.first().price, self.test_product_price)
+        self.assertEqual(Product.objects.first().category, self.test_category)
         # Ensure created_at, updated_at are set
         self.assertIsNotNone(Product.objects.first().created_at)
         self.assertIsNotNone(Product.objects.first().updated_at)
@@ -49,24 +43,18 @@ class ProductTestCase(TestCase):
     def test_product_category_relationship(self):
         # Test the relationship between product and category
         product = Product.objects.create(
-            name=self.test_product_name,
-            price=self.test_product_price,
-            category=self.test_category
+            name=self.test_product_name, price=self.test_product_price, category=self.test_category
         )
         product.full_clean()
         self.assertEqual(product.category.name, self.test_category.name)
-        self.assertTrue(
-            Category.objects.filter(name=product.category.name).exists()
-        )
+        self.assertTrue(Category.objects.filter(name=product.category.name).exists())
 
     @log_execution
     def test_failure_product_creation_without_name(self):
         # Test the failure of product creation without a name
         with self.assertRaises(Exception):
             product = Product(
-                description=self.test_product_description,
-                price=self.test_product_price,
-                category=self.test_category
+                description=self.test_product_description, price=self.test_product_price, category=self.test_category
             )
             product.full_clean()
             product.save()
@@ -77,9 +65,7 @@ class ProductTestCase(TestCase):
         # Test the failure of product creation without a price
         with self.assertRaises(Exception):
             product = Product(
-                name=self.test_product_name,
-                description=self.test_product_description,
-                category=self.test_category
+                name=self.test_product_name, description=self.test_product_description, category=self.test_category
             )
             product.full_clean()
             product.save()
@@ -93,7 +79,7 @@ class ProductTestCase(TestCase):
                 name=self.test_product_name,
                 description=self.test_product_description,
                 price=-10.00,  # Invalid price
-                category=self.test_category
+                category=self.test_category,
             )
             product.full_clean()
             product.save()
@@ -108,7 +94,7 @@ class ProductTestCase(TestCase):
                 name=self.test_product_name,
                 description=self.test_product_description,
                 price=Decimal("1000000.00"),  # Exceeds max_digits
-                category=self.test_category
+                category=self.test_category,
             )
             product.full_clean()
             product.save()
@@ -118,11 +104,6 @@ class ProductTestCase(TestCase):
     def test_product_string_representation(self):
         # Test the string representation of a product
         product = Product.objects.create(
-            name=self.test_product_name,
-            price=self.test_product_price,
-            category=self.test_category
+            name=self.test_product_name, price=self.test_product_price, category=self.test_category
         )
-        self.assertEqual(
-            str(product),
-            self.test_product_name
-        )
+        self.assertEqual(str(product), self.test_product_name)
