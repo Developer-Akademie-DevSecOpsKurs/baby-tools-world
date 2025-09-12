@@ -28,7 +28,7 @@ jobs:
           python-version: '3.12'
       - name: Install Dependencies
         run: |
-          pip install -r requirements-dev.txt
+          pip install -r requirements.txt
       - name: Lint and Check Formatting
         run: |
           echo "Running flake8 and black"
@@ -51,7 +51,6 @@ jobs:
       - name: Run Tests with Coverage
         working-directory: src
         run: |
-          pip install coverage
           coverage run --branch --omit=manage.py,test*.py manage.py test
           # generate coverage report
           coverage report -m --skip-covered --skip-empty --fail-under 69
