@@ -9,28 +9,55 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('products', '0001_initial'),
+        ("products", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Comment',
+            name="Comment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('guest_name', models.CharField(blank=True, max_length=80)),
-                ('guest_email', models.EmailField(blank=True, max_length=254)),
-                ('rating', models.PositiveSmallIntegerField(validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(5)])),
-                ('text', models.TextField(blank=True, max_length=400)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='products.product')),
-                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("guest_name", models.CharField(blank=True, max_length=80)),
+                ("guest_email", models.EmailField(blank=True, max_length=254)),
+                (
+                    "rating",
+                    models.PositiveSmallIntegerField(
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(5),
+                        ]
+                    ),
+                ),
+                ("text", models.TextField(blank=True, max_length=400)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="comments", to="products.product"
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-created_at'],
-                'indexes': [models.Index(fields=['product', 'created_at'], name='products_co_product_593a1e_idx')],
-                'constraints': [models.CheckConstraint(condition=models.Q(('rating__gte', 1), ('rating__lte', 5)), name='comment_rating_range'), models.UniqueConstraint(condition=models.Q(('user__isnull', False)), fields=('product', 'user'), name='unique_user_product_comment')],
+                "ordering": ["-created_at"],
+                "indexes": [models.Index(fields=["product", "created_at"], name="products_co_product_593a1e_idx")],
+                "constraints": [
+                    models.CheckConstraint(
+                        condition=models.Q(("rating__gte", 1), ("rating__lte", 5)), name="comment_rating_range"
+                    ),
+                    models.UniqueConstraint(
+                        condition=models.Q(("user__isnull", False)),
+                        fields=("product", "user"),
+                        name="unique_user_product_comment",
+                    ),
+                ],
             },
         ),
     ]

@@ -26,7 +26,8 @@ In order to quickly get started with the project follow these steps:
         - on MacOS/Linux run: `source my-venv/bin/activate`
 1. install the project dependencies with `pip install -r requirements.txt`
 1. configure required application environment variables
-    - `cp example.env .env`
+    - `cp example.env ./src/.env`
+1. go to the `src` directory via `cd src`
 1. prepare the database (create and apply migrations)
     1. `python manage.py makemigrations`
     1. `python manage.py migrate`

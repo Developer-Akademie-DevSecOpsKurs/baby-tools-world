@@ -6,19 +6,9 @@ from django.conf import settings
 
 # Create your models here.
 class Category(models.Model):
-    name = models.CharField(
-        max_length=50,
-        unique=True,
-        null=False,
-        blank=False
-    )
+    name = models.CharField(max_length=50, unique=True, null=False, blank=False)
     description = models.TextField(max_length=200, null=True, blank=True)
-    slug = models.SlugField(
-        max_length=50,
-        unique=True,
-        null=False,
-        blank=False
-    )
+    slug = models.SlugField(max_length=50, unique=True, null=False, blank=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -27,31 +17,17 @@ class Category(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['name']
-        verbose_name_plural = 'Categories'
+        ordering = ["name"]
+        verbose_name_plural = "Categories"
 
 
 class Product(models.Model):
 
-    category = models.ForeignKey(
-        Category,
-        null=True,
-        on_delete=models.DO_NOTHING
-    )
+    category = models.ForeignKey(Category, null=True, on_delete=models.DO_NOTHING)
     description = models.TextField(max_length=250, null=True, blank=True)
-    image = models.ImageField(
-        upload_to="imgs/products/",
-        null=True,
-        blank=True
-    )
+    image = models.ImageField(upload_to="imgs/products/", null=True, blank=True)
     name = models.CharField(max_length=80, blank=False, null=False)
-    price = models.DecimalField(
-        max_digits=6,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(Decimal('0.00'))
-        ]
-    )
+    price = models.DecimalField(max_digits=6, decimal_places=2, validators=[MinValueValidator(Decimal("0.00"))])
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -60,7 +36,8 @@ class Product(models.Model):
     @property
     def average_rating(self):
         from django.db.models import Avg
-        return self.comments.aggregate(a=Avg('rating'))['a'] or 0
+
+        return self.comments.aggregate(a=Avg("rating"))["a"] or 0
 
     @property
     def rating_count(self):
@@ -72,42 +49,24 @@ class Product(models.Model):
 
 # NEW model
 class Comment(models.Model):
-    product = models.ForeignKey(
-        Product,
-        related_name='comments',
-        on_delete=models.CASCADE
-    )
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL
-    )
+    product = models.ForeignKey(Product, related_name="comments", on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
     guest_name = models.CharField(max_length=80, blank=True)
     guest_email = models.EmailField(blank=True)
-    rating = models.PositiveSmallIntegerField(
-        validators=[MinValueValidator(1), MaxValueValidator(5)]
-    )
+    rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     text = models.TextField(max_length=400, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
         constraints = [
-            models.CheckConstraint(
-                check=models.Q(rating__gte=1, rating__lte=5),
-                name='comment_rating_range'
-            ),
+            models.CheckConstraint(check=models.Q(rating__gte=1, rating__lte=5), name="comment_rating_range"),
             models.UniqueConstraint(
-                fields=['product', 'user'],
-                name='unique_user_product_comment',
-                condition=models.Q(user__isnull=False)
-            )
+                fields=["product", "user"], name="unique_user_product_comment", condition=models.Q(user__isnull=False)
+            ),
         ]
-        indexes = [
-            models.Index(fields=['product', 'created_at'])
-        ]
+        indexes = [models.Index(fields=["product", "created_at"])]
 
     def __str__(self):
         who = self.user.username if self.user else (self.guest_name or "Guest")
