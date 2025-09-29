@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase
 from django.core.exceptions import ValidationError
+from django.test import TestCase
 
 from btw_app.utils import log_execution
 from products.models import Category, Comment, Product

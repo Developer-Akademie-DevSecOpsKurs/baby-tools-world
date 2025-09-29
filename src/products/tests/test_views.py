@@ -1,9 +1,8 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth import get_user_model
 
 from products.models import Product
-
 
 User = get_user_model()
 
@@ -11,12 +10,8 @@ User = get_user_model()
 class ProductViewTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = User.objects.create_user(
-            username="tester", email="t@example.com", password="pass1234"
-        )
-        cls.other_user = User.objects.create_user(
-            username="other", email="o@example.com", password="pass1234"
-        )
+        cls.user = User.objects.create_user(username="tester", email="t@example.com", password="pass1234")
+        cls.other_user = User.objects.create_user(username="other", email="o@example.com", password="pass1234")
         cls.product = Product.objects.create(
             name="Blue Rattle",
             slug="blue-rattle",
@@ -52,22 +47,23 @@ class ProductViewTests(TestCase):
     def test_product_create_invalid(self):
         self.client.login(username="tester", password="pass1234")
         url = reverse("products:create")
-        resp = self.client.post(url, data={
-            "name": "",             # invalid: required
-            "description": "x",
-            "price": ""             # invalid: required/format
-        })
+        resp = self.client.post(
+            url, data={"name": "", "description": "x", "price": ""}  # invalid: required  # invalid: required/format
+        )
         self.assertEqual(resp.status_code, 200)  # form re-render
         self.assertFormError(resp, "form", "name", "This field is required.")
 
     def test_product_create_ok(self):
         self.client.login(username="tester", password="pass1234")
         url = reverse("products:create")
-        resp = self.client.post(url, data={
-            "name": "Teether",
-            "description": "Nice",
-            "price": "4.50",
-        })
+        resp = self.client.post(
+            url,
+            data={
+                "name": "Teether",
+                "description": "Nice",
+                "price": "4.50",
+            },
+        )
         self.assertIn(resp.status_code, (302, 303))
         self.assertTrue(Product.objects.filter(name="Teether").exists())
 
@@ -83,11 +79,14 @@ class ProductViewTests(TestCase):
         # If ownership needed, ensure self.product.user = self.user in setUpTestData
         self.client.login(username="tester", password="pass1234")
         url = reverse("products:update", args=[self.product.slug])
-        resp = self.client.post(url, data={
-            "name": "Blue Rattle Updated",
-            "description": "Test product",
-            "price": "10.50",
-        })
+        resp = self.client.post(
+            url,
+            data={
+                "name": "Blue Rattle Updated",
+                "description": "Test product",
+                "price": "10.50",
+            },
+        )
         self.assertIn(resp.status_code, (302, 303))
         self.product.refresh_from_db()
         self.assertEqual(self.product.name, "Blue Rattle Updated")
