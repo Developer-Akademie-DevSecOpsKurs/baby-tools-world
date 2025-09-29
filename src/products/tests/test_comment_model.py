@@ -132,7 +132,7 @@ class CommentTestCase(TestCase):
             rating=self.valid_rating,
         )
         self.assertEqual(Comment.objects.count(), 1)
-        
+
         # Second comment from same user for same product should fail
         with self.assertRaises(Exception):
             comment = Comment(
