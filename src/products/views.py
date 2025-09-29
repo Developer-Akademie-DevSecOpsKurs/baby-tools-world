@@ -1,8 +1,9 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models import Avg, Count
 from django.contrib import messages
-from .models import Product, Category, Comment
+from django.db.models import Avg, Count
+from django.shortcuts import get_object_or_404, redirect, render
+
 from .forms import CommentForm
+from .models import Category, Comment, Product
 
 
 def product_list(request, category_slug=None):
