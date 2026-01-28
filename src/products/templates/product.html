@@ -218,7 +218,7 @@
                 {% endif %}
                 <div class="card-body p-2">
                   <h6 class="card-title mb-1" style="font-size:0.9rem;">
-                    <a href="{% url 'product_detail' other.category.slug other.id %}" title="{{ other.name }}">
+                    <a href="{% url 'product_detail' other.category.slug other.pk %}" title="{{ other.name }}">
                       {{ other.name|truncatechars:32 }}
                     </a>
                   </h6>
@@ -244,7 +244,7 @@
                   {% endwith %}
                 </div>
                 <div class="card-footer text-center p-2">
-                  <a href="{% url 'product_detail' other.category.slug other.id %}" class="btn btn-sm btn-outline-primary w-100">
+                  <a href="{% url 'product_detail' other.category.slug other.pk %}" class="btn btn-sm btn-outline-primary w-100">
                     Details
                   </a>
                 </div>
