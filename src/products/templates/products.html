@@ -33,6 +33,24 @@
           <div class="mb-1 text-muted">
             {{product.price}} &euro;
           </div>
+          <div class="mb-2">
+            {% if product.total_ratings > 0 %}
+              <span title="{{ product.total_ratings }} total rating(s)">
+                {% with product.avg_rating|floatformat:1 as avg %}
+                  {% for i in "12345" %}
+                    {% if forloop.counter <= product.avg_rating %}
+                      <span class="text-warning">&#9733;</span>
+                    {% else %}
+                      <span class="text-secondary">&#9734;</span>
+                    {% endif %}
+                  {% endfor %}
+                  <strong>{{ avg }}</strong>
+                {% endwith %}
+              </span>
+            {% else %}
+              <span class="text-muted" title="No ratings yet">No ratings</span>
+            {% endif %}
+          </div>
           <p class="card-text">
             {{product.description | truncatechars:80}}
           </p>
