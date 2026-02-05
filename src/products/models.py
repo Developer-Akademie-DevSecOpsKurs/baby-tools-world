@@ -62,7 +62,7 @@ class Comment(models.Model):
     class Meta:
         ordering = ["-created_at"]
         constraints = [
-            models.CheckConstraint(check=models.Q(rating__gte=1, rating__lte=5), name="comment_rating_range"),
+            models.CheckConstraint(condition=models.Q(rating__gte=1, rating__lte=5), name="comment_rating_range"),
             models.UniqueConstraint(
                 fields=["product", "user"], name="unique_user_product_comment", condition=models.Q(user__isnull=False)
             ),
