@@ -16,8 +16,12 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+# BASE_DIR is the src/ folder
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / ".env")
+# The project root folder.
+ROOT_DIR = BASE_DIR.parent
+# Load environment variables from .env file (if one is present)
+load_dotenv()
 
 # The author value that will be used in the footer of the application
 AUTHOR = os.getenv("AUTHOR")
@@ -33,6 +37,10 @@ DEBUG = os.getenv("DEBUG", "true") == "true"
 host_list = os.getenv("ALLOWED_HOSTS", "localhost, 127.0.0.1, 0.0.0.0")
 
 ALLOWED_HOSTS = [x.strip() for x in host_list.split(",")]
+
+print(f"Allowed Hosts: \t\t{ALLOWED_HOSTS}")
+print(f"Author: \t\t{AUTHOR}")
+print(f"Base Directory: \t{BASE_DIR}")
 
 
 # Application definition
