@@ -5,29 +5,79 @@
 <form method="POST">
     {% csrf_token %}
     <div class="container content-center mt-4">
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         <div class="mb-3">
             <label class="form-label">First Name</label>
             {{form.first_name}}
+            {% if form.first_name.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.first_name.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
         <div class="mb-3">
             <label class="form-label">Last Name</label>
             {{form.last_name}}
+            {% if form.last_name.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.last_name.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
         <div class="mb-3">
             <label class="form-label">Username</label>
             {{form.username}}
+            {% if form.username.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.username.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
         <div class="mb-3">
             <label class="form-label">Email</label>
             {{form.email}}
+            {% if form.email.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.email.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
         <div class="mb-3">
             <label class="form-label">Password</label>
             {{form.password1}}
+            {% if form.password1.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.password1.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
         <div class="mb-3">
             <label class="form-label">Repeat Password</label>
             {{form.password2}}
+            {% if form.password2.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.password2.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
 
         <input type="submit" value="Register now" class="btn btn-primary">
