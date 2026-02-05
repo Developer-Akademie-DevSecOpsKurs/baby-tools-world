@@ -67,6 +67,31 @@ To configure the project, follow these steps:
     - `ALLOWED_HOSTS`: provide a list of comma-separated values for the allowed host configuration => Defaults to `'localhost, 127.0.0.1, 0.0.0.0'`
     - `DEBUG`: Set to `True` for development or `False` for production. Defaults to `True`
 
+### Running the linting tools
+
+> [!tip]
+> In order to run the routines below the required packages must be installed (done after running `pip install -r requirements.txt`).
+> 
+> If you are using a virtual environment this also needs to be activated.
+
+To run code-quality checks that check the code-style and formatting you can run the following commands in your terminal:
+
+```bash
+# to format the python code
+black .
+# to apply correct sorting for imports
+isort .
+```
+
+#### When to run this
+
+You should check the code-style before pushing the commits to the remote repository.
+In case you forgot it and somehow violated a rule, the CI workflow will fail -> run linting, add changes, commit, push -> see if pipeline passes
+
+> [!note]
+> If a CI workflow fails, you should check the logs to find out where the workflow failed and what was the reason for this failure.
+
+
 ### Testing
 
 This project contains tests for the corresponding apps in the respective packages.
