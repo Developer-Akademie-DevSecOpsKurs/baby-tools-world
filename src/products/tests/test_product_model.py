@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from btw_app.utils import log_execution
@@ -52,29 +53,31 @@ class ProductTestCase(TestCase):
     @log_execution
     def test_failure_product_creation_without_name(self):
         # Test the failure of product creation without a name
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValidationError) as ctx:
             product = Product(
                 description=self.test_product_description, price=self.test_product_price, category=self.test_category
             )
             product.full_clean()
             product.save()
+        self.assertEqual(ctx.exception.message_dict, {"name": ["This field cannot be blank."]})
         self.assertEqual(Product.objects.count(), 0)
 
     @log_execution
     def test_failure_product_creation_without_price(self):
         # Test the failure of product creation without a price
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValidationError) as ctx:
             product = Product(
                 name=self.test_product_name, description=self.test_product_description, category=self.test_category
             )
             product.full_clean()
             product.save()
+        self.assertEqual(ctx.exception.message_dict, {"price": ["This field cannot be null."]})
         self.assertEqual(Product.objects.count(), 0)
 
     @log_execution
     def test_failure_product_creation_with_invalid_price(self):
         # Test the failure of product creation with an invalid price
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValidationError) as ctx:
             product = Product(
                 name=self.test_product_name,
                 description=self.test_product_description,
@@ -83,13 +86,14 @@ class ProductTestCase(TestCase):
             )
             product.full_clean()
             product.save()
+        self.assertEqual(ctx.exception.message_dict, {"price": ["Ensure this value is greater than or equal to 0.00."]})
         self.assertEqual(Product.objects.count(), 0)
 
     @log_execution
     def test_failure_product_creation_with_too_high_price(self):
         # Test the failure of product creation
         # with a price exceeding max_digits
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValidationError) as ctx:
             product = Product(
                 name=self.test_product_name,
                 description=self.test_product_description,
@@ -98,6 +102,9 @@ class ProductTestCase(TestCase):
             )
             product.full_clean()
             product.save()
+        self.assertEqual(
+            ctx.exception.message_dict, {"price": ["Ensure that there are no more than 6 digits in total."]}
+        )
         self.assertEqual(Product.objects.count(), 0)
 
     @log_execution
@@ -106,4 +113,5 @@ class ProductTestCase(TestCase):
         product = Product.objects.create(
             name=self.test_product_name, price=self.test_product_price, category=self.test_category
         )
+        self.assertEqual(str(product), self.test_product_name)
         self.assertEqual(str(product), self.test_product_name)
