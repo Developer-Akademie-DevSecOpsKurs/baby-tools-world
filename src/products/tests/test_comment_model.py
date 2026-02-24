@@ -77,7 +77,7 @@ class CommentTestCase(TestCase):
     # FAILURE TESTS
     @log_execution
     def test_failure_comment_creation_without_product(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValidationError) as ctx:
             comment = Comment(
                 user=self.user,
                 text=self.text_content,
@@ -85,11 +85,12 @@ class CommentTestCase(TestCase):
             )
             comment.full_clean()
             comment.save()
+        self.assertEqual(ctx.exception.message_dict, {"product": ["This field cannot be null."]})
         self.assertEqual(Comment.objects.count(), 0)
 
     @log_execution
     def test_failure_comment_creation_without_rating(self):
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValidationError) as ctx:
             comment = Comment(
                 product=self.product,
                 user=self.user,
@@ -97,11 +98,12 @@ class CommentTestCase(TestCase):
             )
             comment.full_clean()
             comment.save()
+        self.assertEqual(ctx.exception.message_dict, {"rating": ["This field cannot be null."]})
         self.assertEqual(Comment.objects.count(), 0)
 
     @log_execution
     def test_failure_comment_creation_with_invalid_rating_low(self):
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(ValidationError) as ctx:
             comment = Comment(
                 product=self.product,
                 user=self.user,
@@ -109,11 +111,12 @@ class CommentTestCase(TestCase):
                 rating=0,  # min is 1
             )
             comment.full_clean()
+        self.assertEqual(ctx.exception.message_dict, {"rating": ["Ensure this value is greater than or equal to 1."]})
         self.assertEqual(Comment.objects.count(), 0)
 
     @log_execution
     def test_failure_comment_creation_with_invalid_rating_high(self):
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(ValidationError) as ctx:
             comment = Comment(
                 product=self.product,
                 user=self.user,
@@ -121,6 +124,7 @@ class CommentTestCase(TestCase):
                 rating=6,  # max is 5
             )
             comment.full_clean()
+        self.assertEqual(ctx.exception.message_dict, {"rating": ["Ensure this value is less than or equal to 5."]})
         self.assertEqual(Comment.objects.count(), 0)
 
     @log_execution
@@ -134,7 +138,7 @@ class CommentTestCase(TestCase):
         self.assertEqual(Comment.objects.count(), 1)
 
         # Second comment from same user for same product should fail
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValidationError) as ctx:
             comment = Comment(
                 product=self.product,
                 user=self.user,
@@ -142,6 +146,9 @@ class CommentTestCase(TestCase):
             )
             comment.full_clean()
             comment.save()
+        self.assertEqual(
+            ctx.exception.message_dict, {"__all__": ["Constraint “unique_user_product_comment” is violated."]}
+        )
         self.assertEqual(Comment.objects.count(), 1)
 
     @log_execution
