@@ -23,9 +23,6 @@ class CommentTestCase(TestCase):
         cls.text_content = "This is a test comment."
         cls.valid_rating = 5
 
-    def setUp(self):
-        Comment.objects.all().delete()
-
     # SUCCESS TESTS
     @log_execution
     def test_successful_comment_creation_minimal(self):

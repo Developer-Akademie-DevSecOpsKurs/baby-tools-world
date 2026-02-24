@@ -13,10 +13,6 @@ class CategoryTestCase(TestCase):
         self.test_category_slug = "test-category"
         self.test_category_description = "This is a test category description."
 
-    def setUp(self):
-        # Ensure there are no categories in the db.
-        Category.objects.all().delete()
-
     # SUCCESS TEST CASES
     @log_execution
     def test_successful_category_creation_without_description(self):

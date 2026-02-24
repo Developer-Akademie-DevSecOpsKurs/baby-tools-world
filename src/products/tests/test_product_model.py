@@ -16,10 +16,6 @@ class ProductTestCase(TestCase):
         self.test_product_description = "This is a test product description."
         self.test_product_price = Decimal("19.99")
 
-    def setUp(self):
-        # Ensure there are no products in the db.
-        Product.objects.all().delete()
-
     @log_execution
     def test_successful_product_creation(self):
         # Test the creation of a product
