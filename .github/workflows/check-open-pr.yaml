@@ -12,7 +12,7 @@ permissions:
   pull-requests: read
 
 jobs:
-  check-open-pr:
+  check-for-open-pr:
     runs-on: ubuntu-latest
 
     steps:
