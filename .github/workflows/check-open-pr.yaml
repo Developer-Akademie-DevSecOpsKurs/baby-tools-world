@@ -38,3 +38,19 @@ jobs:
           fi
 
           echo "Open PR found for branch '$BRANCH_NAME'."
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 0
+      - name: Check if current branch has more than one commit ahead of main
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+        run: |
+          COMMIT_COUNT=$(git rev-list --count main..HEAD)
+          if [ "$COMMIT_COUNT" -le 1 ]; then
+            echo "Branch '$BRANCH_NAME' has only $COMMIT_COUNT commit(s) ahead of main."
+            echo "Please add more commits to the branch before submitting a pull request."
+            exit 1
+          fi
+
+          echo "Branch '$BRANCH_NAME' has $COMMIT_COUNT commits ahead of main."
