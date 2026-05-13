@@ -1,0 +1,17 @@
+name: Check open PR for feature branch
+
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    types: [opened]
+
+jobs:
+  check-commits:
+    uses: ./.github/workflows/check-commits-ahead.yaml
+    with:
+      min_commits: 2
+
+  check-for-open-pr:
+    uses: ./.github/workflows/check-open-pr.yaml
