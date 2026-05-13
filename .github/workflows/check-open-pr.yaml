@@ -46,7 +46,7 @@ jobs:
         env:
           BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
         run: |
-          COMMIT_COUNT=$(git rev-list --count main..HEAD)
+          COMMIT_COUNT=$(git rev-list --count origin/main..HEAD)
           if [ "$COMMIT_COUNT" -le 1 ]; then
             echo "Branch '$BRANCH_NAME' has only $COMMIT_COUNT commit(s) ahead of main."
             echo "Please add more commits to the branch before submitting a pull request."
