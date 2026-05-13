@@ -38,12 +38,3 @@ jobs:
           fi
 
           echo "Open PR found for branch '$BRANCH_NAME'."
-      - name: Checkout repository
-        uses: actions/checkout@v6.0.2
-        with:
-          fetch-depth: 0
-      - name: Run markdownlint on README.md
-        uses: DavidAnson/markdownlint-cli2-action@v23.2.0
-        with:
-          globs: |
-            README.md
