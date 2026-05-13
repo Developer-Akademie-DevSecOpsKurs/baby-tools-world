@@ -1,4 +1,4 @@
-name: Check open PR for feature branch
+name: Check markdown lint
 
 on:
   push:
