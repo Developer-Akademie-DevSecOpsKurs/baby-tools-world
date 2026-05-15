@@ -21,7 +21,7 @@ In order to quickly get started with the project follow these steps:
 1. clone the repository
 1. nagivate to the repository
 1. (optional) create a virtual environment with `python -m venv my-venv`
-    1. activate the virtual environment: 
+    1. activate the virtual environment:
         - on Windows run: `my-venv/Scripts/activate`
         - on MacOS/Linux run: `source my-venv/bin/activate`
 1. install the project dependencies with `pip install -r requirements.txt`
@@ -51,7 +51,6 @@ The project is modularized into several apps:
 
 Each app has its own `models.py`, `views.py`, `urls.py`, and `admin.py` files to encapsulate its functionality.
 
-
 ## Usage
 
 In this section you can read about the project a bit more in detail.
@@ -61,7 +60,7 @@ In this section you can read about the project a bit more in detail.
 To configure the project, follow these steps:
 
 1. Copy the example environment file to the `src` directory: `cp example.env src/.env`.
-    - the file needs to be stored next to the manage.py file in order to function properly. 
+    - the file needs to be stored next to the manage.py file in order to function properly.
     Other locations might also work but there is no guarantuee, and in last consequence you will need to update to project correspondingly.
 2. Open your `src/.env` and set the required environment variables:
     - `ALLOWED_HOSTS`: provide a list of comma-separated values for the allowed host configuration => Defaults to `'localhost, 127.0.0.1, 0.0.0.0'`
@@ -71,7 +70,7 @@ To configure the project, follow these steps:
 
 > [!tip]
 > In order to run the routines below the required packages must be installed (done after running `pip install -r requirements.txt`).
-> 
+>
 > If you are using a virtual environment this also needs to be activated.
 
 To run code-quality checks that check the code-style and formatting you can run the following commands in your terminal:
@@ -90,7 +89,6 @@ In case you forgot it and somehow violated a rule, the CI workflow will fail -> 
 
 > [!note]
 > If a CI workflow fails, you should check the logs to find out where the workflow failed and what was the reason for this failure.
-
 
 ### Testing
 
@@ -119,16 +117,16 @@ To run the tests with the `django testrunner` you can use the following command:
 
 - `python manage.py test`, you need to run this in the folder where `manage.py` lives -> `src`
 
-For more information about testing, refer to the testing documentation in this repository, see [here](./docs/testing.md)
+For more information about testing, refer to the testing documentation in this repository, see [testing documentation](./docs/testing.md)
 
 ### Running with a WSGI Server
 
 **WSGI** (Web Server Gateway Interface) is a specification that defines a standard interface between web servers and Python web applications or frameworks.
 It acts as a bridge, allowing web servers to communicate with Python applications in a consistent manner.
 
-In Django deployments, WSGI is used to serve the application in a production environment. 
-It enables the web server (e.g., Gunicorn, uWSGI, or Apache with mod_wsgi) to forward 
-requests to the Django application and return responses to the client. This ensures that 
+In Django deployments, WSGI is used to serve the application in a production environment.
+It enables the web server (e.g., Gunicorn, uWSGI, or Apache with mod_wsgi) to forward
+requests to the Django application and return responses to the client. This ensures that
 the application can handle HTTP requests efficiently and reliably in a scalable setup.
 
 > `gunicorn` and `waitress` are similar tools and can be used for the same purpose,

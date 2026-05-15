@@ -26,3 +26,9 @@ exclude = [
     ".env",
     "migrations",
 ]
+
+[tool.markdownlint-cli2]
+noProgress = true
+
+[tool.markdownlint-cli2.config]
+line-length = false
