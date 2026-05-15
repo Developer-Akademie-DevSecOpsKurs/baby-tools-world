@@ -19,3 +19,8 @@ jobs:
     permissions:
       pull-requests: read
     uses: ./.github/workflows/check-open-pr.yaml
+
+  check-markdown-lint:
+    permissions:
+      contents: read
+    uses: ./.github/workflows/check-markdown-lint.yaml

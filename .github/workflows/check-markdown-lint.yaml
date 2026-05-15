@@ -22,5 +22,3 @@ jobs:
       uses: DavidAnson/markdownlint-cli2-action@v23.2.0
       with:
         globs: ${{ env.MARKDOWN_FILES }}
-        config: pyproject.toml
-        configPointer: tool/markdownlint-cli2.config
