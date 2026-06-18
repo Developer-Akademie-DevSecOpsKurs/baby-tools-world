@@ -1,11 +1,4 @@
-## Description
-Please include a summary of the changes and related context. Explain the what and why of your changes.
+Please go to the `Preview` tab and select the appropriate sub-template:
 
-## Type of Change
-- [ ] New feature 
-
-## Checklist
-- [ ] I have performed a self-review of my own code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] My changes generate no new warnings
+* [Feature](?expand=1&template=feature_pr_template.md)
+* [Project Submission](?expand=1&template=project_submission.md)
